@@ -37,7 +37,7 @@ class Consume extends Command
         echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
         $callback = function ($msg) {
-            echo ' [x] Received: ', $msg->body, "\n";
+            $this->line(' [x] Received: <options=bold>' . $msg->body . "</>\n", 'info');
         };
 
         $channel->basic_consume('laravel', '', false, true, false, false, $callback);

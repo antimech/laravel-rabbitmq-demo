@@ -43,7 +43,7 @@ class Publish extends Command
         $msg = new AMQPMessage($this->argument('message'));
         $channel->basic_publish($msg, 'laravel');
 
-        echo ' [x] Sent: ', $this->argument('message'), "\n";
+        $this->line(' [x] Sent: <options=bold>' . $this->argument('message') . "</>\n", 'info');
 
         $channel->close();
         $connection->close();
