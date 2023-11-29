@@ -32,6 +32,29 @@ Consume:
 php artisan app:rabbitmq-consume
 ```
 
+
+## Supervisor
+
+Create `laravel-rabbitmq-consume-worker.conf` file in `/etc/supervisor/conf.d` directory and paste it there:
+
+```ini
+[program:laravel-rabbitmq-consume-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /home/forge/service-b.com/artisan app:rabbitmq-consume
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=forge
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/home/forge/service-b.com/storage/log/worker.log
+stopwaitsecs=3600
+```
+
+Update the config accordingly, specifically paths in `command` and `stdout_logfile`.
+
+
 ## Testing
 
 ```bash
