@@ -13,7 +13,7 @@ class Publish extends Command
      *
      * @var string
      */
-    protected $signature = 'app:rabbitmq-publish';
+    protected $signature = 'app:rabbitmq-publish {message}';
 
     /**
      * The console command description.
@@ -40,10 +40,10 @@ class Publish extends Command
 
         $channel->queue_bind('laravel', 'laravel');
 
-        $msg = new AMQPMessage('Hello World!');
+        $msg = new AMQPMessage($this->argument('message'));
         $channel->basic_publish($msg, 'laravel');
 
-        echo " [x] Sent 'Hello World!'\n";
+        echo ' [x] Sent: ', $this->argument('message'), "\n";
 
         $channel->close();
         $connection->close();

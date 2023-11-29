@@ -14,6 +14,6 @@ class PublishTest extends TestCase
     public function test_example(): void
     {
         $this->expectException(\PhpAmqpLib\Exception\AMQPIOException::class);
-        $this->artisan('app:rabbitmq-publish');
+        $this->artisan('app:rabbitmq-publish', ['message' => '{"example": "message"}']);
     }
 }
