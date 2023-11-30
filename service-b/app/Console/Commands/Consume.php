@@ -21,18 +21,17 @@ class Consume extends Command
      */
     protected $description = 'Command description';
 
+    public function __construct(private readonly AMQPStreamConnection $connection)
+    {
+        parent::__construct();
+    }
+
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $connection = new AMQPStreamConnection(
-            config('rabbitmq.host'),
-            config('rabbitmq.port'),
-            config('rabbitmq.user'),
-            config('rabbitmq.password')
-        );
-        $channel = $connection->channel();
+        $channel = $this->connection->channel();
 
         echo " [*] Waiting for messages. To exit press CTRL+C\n";
 

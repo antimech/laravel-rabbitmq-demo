@@ -22,18 +22,17 @@ class Publish extends Command
      */
     protected $description = 'Command description';
 
+    public function __construct(private readonly AMQPStreamConnection $connection)
+    {
+        parent::__construct();
+    }
+
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $connection = new AMQPStreamConnection(
-            config('rabbitmq.host'),
-            config('rabbitmq.port'),
-            config('rabbitmq.user'),
-            config('rabbitmq.password')
-        );
-        $channel = $connection->channel();
+        $channel = $this->connection->channel();
 
         $channel->exchange_declare('laravel', 'fanout', false, true, false);
         $channel->queue_declare('laravel', false, true, false, false);
@@ -46,6 +45,6 @@ class Publish extends Command
         $this->line(' [x] Sent: <options=bold>' . $this->argument('message') . "</>\n", 'info');
 
         $channel->close();
-        $connection->close();
+        $this->connection->close();
     }
 }
